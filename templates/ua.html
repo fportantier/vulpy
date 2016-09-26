@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <a href="/delhistory">Delete History</a>
+        <ul>
+        {% for ua in history %}
+            <li>{{ ua.strip() | safe }}</li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>
+
