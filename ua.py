@@ -11,7 +11,7 @@ def save(name='nobody'):
 
     with open('ua-history.txt', 'a') as f:
         uagent = request.headers['User-Agent']
-        #ua = html.escape(uagent)
+        #uagent = html.escape(uagent)
         f.write(uagent + "\n")
 
     return "ok <a href='/report'>Access Report</a>"
@@ -24,21 +24,21 @@ def report():
         history = f.readlines()
 
     response = make_response(render_template('ua.html', history=history))
-    #response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-Frame-Options'] = 'DENY'
     return response
 
 
-@app.route('/delhistory', methods=['GET'])
+@app.route('/delhistory/', methods=['GET'])
 def delhistory():
 
-    #if not str(request.referrer).startswith(request.url_root):
-    #    app.logger.info("referer:", request.referrer)
-    #    return "CSRF ATTEMPT!"
+    if not str(request.referrer).startswith(request.url_root):
+        #app.logger.info("referer:", str(request.referrer))
+        return "CSRF ATTEMPT!"
 
     os.unlink('ua-history.txt')
     return "ok"
 
 
 if __name__ == '__main__':
-  app.run(host="0.0.0.0", port=8000)
+  app.run(port=8000)
 
