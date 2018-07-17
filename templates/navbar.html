@@ -1,9 +1,9 @@
 <div class="w3-top">
   <div class="w3-bar w3-black w3-card">
     <a href="/" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-    {% if g.session.username == 'admin' %}
+    {# {% if g.session.username == 'admin' %}
     <a href="/admin" class="w3-bar-item w3-button w3-padding-large">ADMIN</a>
-    {% endif %}
+    {% endif %} #}
     {% if g.session.username %}
     <a href="/user/chpasswd" class="w3-bar-item w3-button w3-padding-large">CHPASSWD</a>
     <a href="/mfa" class="w3-bar-item w3-button w3-padding-large">MFA</a>
