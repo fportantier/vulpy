@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import sqlite3
 #from passlib.hash import pbkdf2_sha256
