@@ -60,5 +60,10 @@ def password_complexity(password):
     if len(re.findall(r'[0-9]', password)) < 1:
         return False
 
+    with open('bad-passwords.txt') as f:
+        for p in f.read().split('\n'):
+            if password == p:
+                return False
+
     return True
 
