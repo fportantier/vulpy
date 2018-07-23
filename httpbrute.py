@@ -14,7 +14,8 @@ passwords = [
     '12345',
     '123456',
     '1234567',
-    '12345678'
+    '12345678',
+    'SuperSecret',
 ]
 
 for password in passwords:
