@@ -1,10 +1,13 @@
 import json
 import base64
 
+from cryptography.fernet import Fernet
+
+key = 'JHtM1wEt1I1J9N_Evjwqr3yYauXIqSxYzFnRhcf0ZG0='
+fernet = Fernet(key)
 
 def create(response, username):
-    session = base64.b64encode(json.dumps({'username': username}).encode())
-    response.set_cookie('vulpy_session', session)
+    response.set_cookie('vulpy_session', fernet.encrypt(username.encode()))
     return response
 
 
@@ -13,13 +16,12 @@ def load(request):
     session = {}
     cookie = request.cookies.get('vulpy_session')
 
-    try:
-        if cookie:
-            decoded = base64.b64decode(cookie.encode())
-            if decoded:
-                session = json.loads(base64.b64decode(cookie))
-    except Exception:
-        pass
+    if cookie:
+        try:
+            session = {'username': fernet.decrypt(cookie.encode()).decode()}
+        except Exception as e:
+            print(e)
+            pass
 
     return session
 

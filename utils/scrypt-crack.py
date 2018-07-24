@@ -18,7 +18,6 @@ except binascii.Error:
 
 backend = default_backend()
 
-
 for number in range(10000):
 
     kdf = Scrypt(

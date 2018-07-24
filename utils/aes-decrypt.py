@@ -20,4 +20,4 @@ cipher = Cipher(algorithms.AES(key_digest), modes.CFB(iv), backend=default_backe
 decryptor = cipher.decryptor()
 plain = decryptor.update(msg) + decryptor.finalize()
 
-print(plain.decode())
+print(plain.decode(errors='ignore'))
