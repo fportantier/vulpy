@@ -18,7 +18,6 @@ MarkupSafe==1.0
 maxminddb==1.4.1
 mccabe==0.6.1
 Pillow==5.0.0
-pkg-resources==0.0.0
 pyasn1==0.4.3
 pycodestyle==2.3.1
 pycparser==2.18

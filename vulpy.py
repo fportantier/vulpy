@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
+from pathlib import Path
+
 from flask import Flask, g, redirect, request
 
 from mod_hello import mod_hello
 from mod_user import mod_user
 from mod_posts import mod_posts
 from mod_mfa import mod_mfa
+from mod_csp import mod_csp
 
 import libsession
 
@@ -16,7 +19,20 @@ app.register_blueprint(mod_hello, url_prefix='/hello')
 app.register_blueprint(mod_user, url_prefix='/user')
 app.register_blueprint(mod_posts, url_prefix='/posts')
 app.register_blueprint(mod_mfa, url_prefix='/mfa')
+app.register_blueprint(mod_csp, url_prefix='/csp')
 
+csp_file = Path('csp.txt')
+csp = ''
+
+if csp_file.is_file():
+    with csp_file.open() as f:
+        for line in f.readlines():
+            if line.startswith('#'):
+                continue
+            line = line.replace('\n', '')
+            if line:
+                csp += line
+        print('CSP:', csp)
 
 @app.route('/')
 def do_home():
@@ -26,4 +42,11 @@ def do_home():
 def before_request():
     g.session = libsession.load(request)
 
-app.run(debug=True)
+@app.after_request
+def add_csp_headers(response):
+    if csp:
+        response.headers['Content-Security-Policy'] = csp
+    return response
+
+app.run(debug=True, extra_files='csp.txt')
+

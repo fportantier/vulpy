@@ -5,7 +5,7 @@ from cryptography.fernet import Fernet
 
 key = 'JHtM1wEt1I1J9N_Evjwqr3yYauXIqSxYzFnRhcf0ZG0='
 fernet = Fernet(key)
-ttl = 7200 # seconds
+ttl = 5 # seconds
 
 
 def create(response, username):

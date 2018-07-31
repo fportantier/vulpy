@@ -16,7 +16,7 @@ with open("/tmp/ca.cert", "rb") as ca_cert_file:
 with open("/tmp/acme.csr", "rb") as csr_file:
     csr = x509.load_pem_x509_csr(csr_file.read(), default_backend())
 
-with open("/tmp/acme.key", "rb") as key_file:
+with open("/tmp/ca.key", "rb") as key_file:
     private_key = serialization.load_pem_private_key(
         key_file.read(),
         password=None,
