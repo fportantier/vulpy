@@ -4,6 +4,7 @@ import click
 from pathlib import Path
 
 modules = {
+    'libapi': {},
     'libmfa': {},
     'libposts': {},
     'libsession': {},
