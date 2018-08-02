@@ -10,6 +10,7 @@ modules = {
     'libsession': {},
     'libuser': {},
 #    'login-2a': {},
+    'mod_api': {},
     'mod_hello': {},
     'mod_mfa': {},
     'mod_posts': {},

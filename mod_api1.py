@@ -62,6 +62,6 @@ def do_post_create():
         return jsonify({'error': 'invalid authentication'}), 401
 
     print(request.get_json())
-    return "maybe created"
+    return "You are awesome! Post created."
 
 
