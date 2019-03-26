@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+from pprint import pprint
+import click
+from pathlib import Path
+
+modules = {
+    'libapi': {},
+    'libmfa': {},
+    'libposts': {},
+    'libsession': {},
+    'libuser': {},
+#    'login-2a': {},
+    'mod_api': {},
+    'mod_hello': {},
+    'mod_mfa': {},
+    'mod_posts': {},
+    'mod_user': {},
+#    'mod_welcome': {},
+}
+
+def get_current_version(module):
+    filename = Path(module + '.py').resolve()
+    return filename.stem.replace(module, '')
+
+
+def get_versions(module):
+    versions = []
+    for f in Path('.').glob(module + '*.py'):
+        version = f.stem.replace(module, '')
+        if version:
+            versions.append(version)
+    return sorted(versions)
+
+
+@click.command()
+def cli_show():
+    print('{:<15} {:<15} {}'.format('Module', 'Current', 'Available'))
+    for module in modules.keys():
+        print('{:<15} {:<15} {}'.format(module, get_current_version(module), ', '.join(get_versions(module))))
+
+
+if __name__ == '__main__':
+    cli_show()
+
+
