@@ -36,14 +36,14 @@ def do_key_create():
     try:
         validate(data, key_schema)
     except ValidationError:
-        return jsonify({'error': 'invalid schema', 'schema': key_schema}, 400)
+        return jsonify({'error': 'invalid schema', 'schema': key_schema}), 400
 
     key = libapi.keygen(data['username'], data['password'])
 
     if key:
         return jsonify({'key': key}), 200
     else:
-        return jsonify({'error': 'invalid login'}), 200
+        return jsonify({'error': 'invalid login'}), 403
 
 
 @mod_api.route('/post/<username>', methods=['GET'])
