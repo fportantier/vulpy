@@ -8,7 +8,7 @@ def db_init():
     users = [
         ('admin', 'SuperSecret'),
         ('elliot', '123123123'),
-        ('tim', '123123123')
+        ('tim', '12345678')
     ]
 
     conn = sqlite3.connect('users1.sqlite')

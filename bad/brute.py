@@ -13,6 +13,8 @@ passwords = [
     '1234',
     '12345',
     '123456',
+    '12345678',
+    '123123123',
 ]
 
 for password in passwords:
