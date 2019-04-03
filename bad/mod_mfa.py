@@ -1,13 +1,12 @@
-import sqlite3
-from flask import Blueprint, render_template, redirect, request, g, session, make_response, flash
-import libuser
-import libsession
-import libmfa
-import pyotp
-import qrcode
+
 import base64
 from io import BytesIO
 
+import pyotp
+import qrcode
+from flask import Blueprint, flash, g, redirect, render_template, request
+
+import libmfa
 
 mod_mfa = Blueprint('mod_mfa', __name__, template_folder='templates')
 
@@ -30,10 +29,6 @@ def do_mfa_view():
         img.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode()
 
-        print(img)
-        print(dir(img))
-        print(img_str)
-
         return render_template('mfa.enable.html', secret_url=secret_url, img_str=img_str)
 
 
@@ -48,7 +43,6 @@ def do_mfa_enable():
     otp = request.form.get('otp')
 
     totp = pyotp.TOTP(secret)
-    #totp.now() # => '492039'
 
     if totp.verify(otp):
         libmfa.mfa_enable(g.session['username'])
@@ -71,4 +65,3 @@ def do_mfa_disable():
 
     libmfa.mfa_disable(g.session['username'])
     return redirect('/mfa/')
-

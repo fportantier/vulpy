@@ -1,8 +1,7 @@
 import sqlite3
 import libuser
 
-# SQL Injection vulnerability on username/password parameters
-def login(username, password, **kwargs):
+def login(username, password):
 
     conn = sqlite3.connect('users1.sqlite')
     conn.set_trace_callback(print)
