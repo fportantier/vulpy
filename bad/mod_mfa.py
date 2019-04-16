@@ -60,8 +60,5 @@ def do_mfa_disable():
     if 'username' not in g.session:
         return redirect('/user/login')
 
-    if 'referer' not in request.headers or request.headers['referer'] != 'vulpy.com':
-        return redirect('/user/login')
-
     libmfa.mfa_disable(g.session['username'])
     return redirect('/mfa/')
