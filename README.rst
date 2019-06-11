@@ -60,7 +60,7 @@ Each version has their own sqlite files for the users and posts.
 The execution of the script is, for example:
 
 ::
-
+   cd bad
    ./db_init.py
 
 
