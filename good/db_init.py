@@ -3,7 +3,7 @@
 import os
 import sqlite3
 
-def db_init():
+def db_init_users():
 
     users = [
         ('admin', 'SuperSecret'),
@@ -22,6 +22,16 @@ def db_init():
     conn.close()
 
 
+def db_init_posts():
+
+    conn = sqlite3.connect('posts1.sqlite')
+    c = conn.cursor()
+    c.execute("CREATE TABLE posts (date date, username text, text text)")
+
+    conn.commit()
+    conn.close()
+
+
 if __name__ == '__main__':
 
     try:
@@ -29,5 +39,11 @@ if __name__ == '__main__':
     except FileNotFoundError:
         pass
 
-    db_init()
+    try:
+        os.remove('posts1.sqlite')
+    except FileNotFoundError:
+        pass
+
+    db_init_users()
+    db_init_posts()
 

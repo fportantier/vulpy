@@ -6,7 +6,7 @@ from time import sleep
 
 def login(username, password, **kwargs):
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -35,7 +35,7 @@ def login(username, password, **kwargs):
 
 def userlist():
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -50,7 +50,7 @@ def userlist():
 
 def password_change(username, password):
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
