@@ -60,6 +60,7 @@ Each version has their own sqlite files for the users and posts.
 The execution of the script is, for example:
 
 ::
+
    ./db_init.py
 
 
@@ -69,6 +70,7 @@ Default Credentials
 After database initialization, three users are created:
 
 ::
+
    Username    Password
    --------    -----------
    admin       SuperSecret
