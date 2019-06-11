@@ -11,12 +11,13 @@ Vulpy is a web application developed in Python / Flask / SQLite that has two fac
 Installation
 ------------
 
-git clone https://github.com/portantier/vulpy
+::
+   git clone https://github.com/portantier/vulpy
 
-cd vulpy
+   cd vulpy
 
-pip3 install --user -r requirements.txt
-pip3 install -e .
+   pip3 install --user -r requirements.txt
+   pip3 install -e .
 
 
 Features
