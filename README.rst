@@ -7,14 +7,72 @@ Vulpy is a web application developed in Python / Flask / SQLite that has two fac
 **BAD**: Tries to code like (possibly) you. :p
 
 
-Kali Linux Dependencies
+Installation
+------------
+
+git clone https://github.com/portantier/vulpy
+
+cd vulpy
+
+pip3 install --user -r requirements.txt
+pip3 install -e .
+
+
+Features
+--------
+
+- Login/Logout
+- Read posts from other users
+- Publish posts
+- Multi-Factor Authentication (MFA)
+- API for read and write posts
+- Content Security Policy
+- SSL/TLS Server
+
+
+Vulnerabilities
+---------------
+
+Some of the vulnerabilities present on the "BAD" version:
+
+- Cross-Site Scripting (XSS)
+- SQL Injection
+- Cross Site Request Forgery (CSRF)
+- Session Impersonation
+- Authentication Bruteforce
+- Authentication Bypass
+
+**Note:** The "GOOD" version (not finished yet) is supposed to don't have vulnerabilities, but I'm a human being, so...
+
+
+Database Initialization
 -----------------------
 
-Packages that must be installed on a Kali Linux system:
+Both, "BAD" and "GOOD" versions, requires an initialization of the database.
 
-- python3-bcrypt
-- python3-click
-- python3-cryptography
-- python3-flask
-- python3-geoip2
+This is done with the script "db_init.py" inside each of the directories (bad, and good).
+
+Each version has their own sqlite files for the users and posts.
+
+The execution of the script is, for example:
+
+::
+   ./db_init.py
+
+
+Default Credentials
+-------------------
+
+After database initialization, three users are created:
+
+::
+   Username    Password
+   --------    -----------
+   admin       SuperSecret
+   elliot      123123123
+   tim         12345678
+
+
+You can login with any user, the application doesn't have a permissions system, so, the three have the same permissions.
+
 

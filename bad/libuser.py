@@ -4,7 +4,7 @@ import libuser
 
 def login(username, password):
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -19,7 +19,7 @@ def login(username, password):
 
 def create(username, password):
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     c = conn.cursor()
 
     c.execute("INSERT INTO users (username, password, failures, mfa_enabled, mfa_secret) VALUES ('%s', '%s', '%d', '%d', '%s')" %(username, password, 0, 0, ''))
@@ -30,7 +30,7 @@ def create(username, password):
 
 def userlist():
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -45,7 +45,7 @@ def userlist():
 
 def password_change(username, password):
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
