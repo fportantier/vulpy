@@ -7,6 +7,13 @@ Vulpy is a web application developed in Python / Flask / SQLite that has two fac
 
 **BAD**: Tries to code like (possibly) you. :p
 
+Is developed has a laboratory for the following courses:
+
+Secure Development of Securetia (https://www.securetia.com/cursos.html)
+Secure Development of EducaciónIT (https://www.educacionit.com/curso-de-desarrollo-seguro)
+
+But you can use it has you want (MIT License)
+
 
 OWASP Application Security Verification Standard
 ------------------------------------------------
