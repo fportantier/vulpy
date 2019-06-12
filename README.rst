@@ -8,6 +8,16 @@ Vulpy is a web application developed in Python / Flask / SQLite that has two fac
 **BAD**: Tries to code like (possibly) you. :p
 
 
+OWASP Application Security Verification Standard
+------------------------------------------------
+
+The "GOOD" version (not finished yet) will comply with the OWASP ASVS:
+
+https://www.owasp.org/index.php/Category:OWASP_Application_Security_Verification_Standard_Project
+
+This will permit learn how to develop python code following the best security practices.
+
+
 Installation
 ------------
 
