@@ -35,7 +35,6 @@ Installation
    cd vulpy
 
    pip3 install --user -r requirements.txt
-   pip3 install -e .
 
 
 Features
