@@ -15,7 +15,6 @@ key_schema = {
         "username" : {"type" : "string"},
         "password" : {"type" : "string"},
     },
-    "additionalProperties": False,
 }
 
 
@@ -25,7 +24,6 @@ post_schema = {
     "properties" : {
         "text" : {"type" : "string"},
     },
-    "additionalProperties": False,
 }
 
 
@@ -56,21 +54,19 @@ def do_post_list(username):
 @mod_api.route('/post', methods=['POST'])
 def do_post_create():
 
-    username = libapi.authenticate(request)
+    data = { 'username' : libapi.authenticate(request) }
 
-    if not username:
+    if not data['username']:
         return jsonify({'error': 'invalid authentication'}), 401
 
-    #print(request.get_json())
-
-    data = request.get_json()
+    data.update(request.get_json())
 
     try:
         validate(data, post_schema)
     except ValidationError:
         return jsonify({'error': 'invalid schema', 'schema': post_schema}), 400
 
-    libposts.post(username, data['text'])
+    libposts.post(data['username'], data['text'])
     return "You are awesome! Post created."
 
 

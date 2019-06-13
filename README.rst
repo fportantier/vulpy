@@ -58,6 +58,7 @@ Some of the vulnerabilities present on the "BAD" version:
 - SQL Injection
 - Cross Site Request Forgery (CSRF)
 - Session Impersonation
+- Insecure Deserialization
 - Authentication Bruteforce
 - Authentication Bypass
 
