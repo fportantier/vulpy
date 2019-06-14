@@ -5,7 +5,7 @@ with open('/tmp/darkweb2017-top10000.txt') as f:
 
         password = password.strip()
 
-        if len(password) < 8:
+        if len(password) < 12:
             continue
 
         if len(re.findall(r'[a-z]', password)) < 1:

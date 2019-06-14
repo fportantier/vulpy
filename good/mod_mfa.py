@@ -30,10 +30,6 @@ def do_mfa_view():
         img.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode()
 
-        print(img)
-        print(dir(img))
-        print(img_str)
-
         return render_template('mfa.enable.html', secret_url=secret_url, img_str=img_str)
 
 
@@ -48,7 +44,6 @@ def do_mfa_enable():
     otp = request.form.get('otp')
 
     totp = pyotp.TOTP(secret)
-    #totp.now() # => '492039'
 
     if totp.verify(otp):
         libmfa.mfa_enable(g.session['username'])

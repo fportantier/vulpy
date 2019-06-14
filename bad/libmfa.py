@@ -4,7 +4,7 @@ from time import sleep
 
 def mfa_is_enabled(username):
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -19,7 +19,7 @@ def mfa_is_enabled(username):
 
 def mfa_disable(username):
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -34,7 +34,7 @@ def mfa_enable(username):
 
     #secret=pyotp.random_base32()
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -50,7 +50,7 @@ def mfa_get_secret(username):
 
     #secret=pyotp.random_base32()
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -68,7 +68,7 @@ def mfa_reset_secret(username):
 
     secret=pyotp.random_base32()
 
-    conn = sqlite3.connect('users1.sqlite')
+    conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()

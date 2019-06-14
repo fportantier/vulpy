@@ -55,24 +55,34 @@ def do_create():
     return render_template('user.create.html')
 
 
-@mod_user.route('/chpasswd', methods=['GET', 'POST'])
-def do_chpasswd():
-
-    if request.method == 'POST':
-
-        password = request.form.get('password')
-        password_again = request.form.get('password_again')
-
-        if password != password_again:
-            flash("The passwords don't match")
-            return render_template('user.chpasswd.html')
-
-        if not libuser.password_complexity(password):
-            flash("The password don't comply our complexity requirements")
-            return render_template('user.chpasswd.html')
-
-        libuser.password_change(g.session['username'], password) # = libuser.login(username, password)
-        flash("Password changed")
-
+@mod_user.route('/chpasswd', methods=['GET'])
+def do_chpasswd_get():
     return render_template('user.chpasswd.html')
+
+
+@mod_user.route('/chpasswd', methods=['POST'])
+def do_chpasswd_post():
+
+    if 'username' not in g.session:
+        return redirect('/')
+
+    current_password = request.form.get('current_password')
+    new_password = request.form.get('new_password')
+    new_password_again = request.form.get('new_password_again')
+
+    if not libuser.login(g.session['username'], current_password):
+        flash("Invalid current password")
+        return render_template('user.chpasswd.html')
+
+    if new_password != new_password_again:
+        flash("The passwords don't match")
+        return render_template('user.chpasswd.html')
+
+    if not libuser.is_password_allowed(new_password):
+        flash("The password don't comply our requirements, please, choose another one.")
+        return render_template('user.chpasswd.html')
+
+    libuser.password_set(g.session['username'], new_password)
+    return redirect('/')
+    flash("Password changed")
 
