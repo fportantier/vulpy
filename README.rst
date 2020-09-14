@@ -30,7 +30,7 @@ Installation
 
 ::
 
-   git clone https://github.com/portantier/vulpy
+   git clone https://github.com/fportantier/vulpy
 
    cd vulpy
 
