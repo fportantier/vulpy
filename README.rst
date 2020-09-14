@@ -25,6 +25,7 @@ https://www.owasp.org/index.php/Category:OWASP_Application_Security_Verification
 This will permit learn how to develop python code following the best security practices.
 
 
+
 Installation
 ------------
 
