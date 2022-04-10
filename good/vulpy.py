@@ -15,6 +15,7 @@ import libsession
 
 app = Flask('vulpy')
 app.config['SECRET_KEY'] = '123aa8a93bdde342c871564a62282af857bda14b3359fde95d0c5e4b321610c1'
+app.config["SESSION_COOKIE_SECURE"] = True
 
 app.register_blueprint(mod_hello, url_prefix='/hello')
 app.register_blueprint(mod_user, url_prefix='/user')
