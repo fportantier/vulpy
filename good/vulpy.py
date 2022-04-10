@@ -13,6 +13,8 @@ from mod_api import mod_api
 
 import libsession
 
+import urllib
+
 app = Flask('vulpy')
 app.config['SECRET_KEY'] = '123aa8a93bdde342c871564a62282af857bda14b3359fde95d0c5e4b321610c1'
 
@@ -38,7 +40,9 @@ if csp_file.is_file():
 
 @app.route('/')
 def do_home():
-    return redirect('/posts')
+    loc = urllib.parse.urlparse(request)
+    if loc.netloc == '127.0.0.1':
+        return redirect('/posts')
 
 @app.before_request
 def before_request():
@@ -50,5 +54,5 @@ def add_csp_headers(response):
         response.headers['Content-Security-Policy'] = csp
     return response
 
-app.run(debug=True, host='127.0.1.1', port=5001, extra_files='csp.txt')
+app.run(debug=True, host='127.0.0.1', port=5001, extra_files='csp.txt')
 
