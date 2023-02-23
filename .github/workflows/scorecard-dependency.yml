@@ -1,0 +1,37 @@
+name: scorecard-dependency-analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+permissions:
+  pull-requests: write
+
+jobs:
+  dependency-analysis:
+    name: Scorecards dependency analysis
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PR_NUMBER: ${{ github.event.number }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+      GITHUB_SHA: ${{ github.sha }}
+      GITHUB_ACTOR: ${{ github.actor }}
+
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Print environment variables
+        run: |
+          echo "GITHUB_PR_NUMBER: $GITHUB_PR_NUMBER"
+          echo $GITHUB_REPOSITORY
+          echo $GITHUB_SHA
+          echo $GITHUB_REPOSITORY_OWNER
+          echo $GITHUB_ACTOR
+        shell: bash
+
+      - name: Run analysis
+        uses: naveensrinivasan/scorecard-action/dependency-analysis@main
