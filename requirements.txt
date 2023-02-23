@@ -7,3 +7,4 @@ PyJWT
 pyotp
 qrcode
 requests
+django
