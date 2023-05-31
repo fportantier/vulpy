@@ -34,4 +34,4 @@ jobs:
         shell: bash
 
       - name: Run analysis
-        uses: naveensrinivasan/scorecard-action/dependency-analysis@main
+        uses: ossf/scorecard-dependencyanalysis@dependency-analysis
