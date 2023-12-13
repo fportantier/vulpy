@@ -25,6 +25,8 @@ def post(username, text):
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
 
+    user_check = c.execute(f"SELECT * FROM posts WHERE username = {username}").fetchall()
+    
     rows = c.execute("INSERT INTO posts (username, text, date) VALUES (?, ?, DateTime('now'))", (username, text)) #WHERE username = ?", (username,)).fetchall()
     conn.commit()
 
