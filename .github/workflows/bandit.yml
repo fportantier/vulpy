@@ -13,12 +13,11 @@
 name: Bandit
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main" ]
-  schedule:
-    - cron: '24 7 * * 2'
+    branches: [ "master" ]
+  
 
 jobs:
   bandit:
@@ -38,11 +37,11 @@ jobs:
           # Github token of the repository (automatically created by Github)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information.
           # File or directory to run bandit on
-          # path: # optional, default is .
+          # path: .
           # Report only issues of a given severity level or higher. Can be LOW, MEDIUM or HIGH. Default is UNDEFINED (everything)
-          # level: # optional, default is UNDEFINED
+          # level: HIGH # optional, default is UNDEFINED
           # Report only issues of a given confidence level or higher. Can be LOW, MEDIUM or HIGH. Default is UNDEFINED (everything)
-          # confidence: # optional, default is UNDEFINED
+          # confidence: HIGH # optional, default is UNDEFINED
           # comma-separated list of paths (glob patterns supported) to exclude from scan (note that these are in addition to the excluded paths provided in the config file) (default: .svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg)
           # excluded_paths: # optional, default is DEFAULT
           # comma-separated list of test IDs to skip
