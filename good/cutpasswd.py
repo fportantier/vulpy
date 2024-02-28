@@ -5,6 +5,7 @@ with open('/tmp/darkweb2017-top10000.txt') as f:
 
         password = password.strip()
 
+        
         if len(password) < 12:
             continue
 
