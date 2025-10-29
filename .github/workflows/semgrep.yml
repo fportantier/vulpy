@@ -1,0 +1,39 @@
+name: malware_scan
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  clamav_scan:
+    runs-on: ubuntu-latest
+    # Official ClamAV container (pin to a version for reproducibility)
+    container:
+      image: clamav/clamav:1.3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update virus definitions
+        run: |
+          # Try to fetch latest signatures. If rate-limited in CI, proceed with bundled DB.
+          freshclam --verbose || echo "freshclam failed (possibly rate-limited). Using bundled DB."
+
+      - name: Run ClamAV scan
+        # clamscan returns:
+        # 0 = OK, 1 = Infected files found (will fail job), 2 = Error
+        run: |
+          clamscan -r --infected \
+            --exclude-dir="^\.git$" \
+            --max-filesize=100M \
+            --max-scansize=200M \
+            --log=/tmp/clamav-malware-check.log .
+
+      - name: Upload scan log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clamav_scan_log
+          path: /tmp/clamav-malware-check.log
