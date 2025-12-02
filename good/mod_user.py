@@ -1,4 +1,6 @@
 import sqlite3
+
+import flask
 from flask import Blueprint, render_template, redirect, request, g, session, make_response, flash
 import libuser
 import libsession
@@ -14,15 +16,28 @@ def do_login():
 
     if request.method == 'POST':
 
-        username = request.form.get('username')
+        username_input = request.form.get('username')
         password = request.form.get('password')
         otp = request.form.get('otp')
+        if libuser.is_locked(username_input):
+            flash("Account is locked due to too many attempts. Try again later.")
+            return render_template('user.login.mfa.html')
 
-        username = libuser.login(username, password)
+        username = libuser.login(username_input, password)
 
         if not username:
-            flash("Invalid user or password");
+            libuser.increment_failed_attempts(username_input)
+
+            if libuser.get_failed_attempts(username_input) >= libuser.MAX_FAILED_ATTEMPTS:
+                flask.flash("Exceeded Password attempts. Try again later.")
+                libuser.lock_account(username_input)
+            else:
+                flash("Invalid Username or Password")
             return render_template('user.login.mfa.html')
+
+
+        libuser.set_failed_attempts(username_input, 0)
+        libuser.unlock_account(username_input)
 
         if libmfa.mfa_is_enabled(username):
             if not libmfa.mfa_validate(username, otp):
@@ -46,7 +61,7 @@ def do_create():
         username = request.form.get('username')
         password = request.form.get('password')
         email = request.form.get('password')
-
+        libuser.user_create(username, password)
         session['username'] = libuser.login(username, password)
 
         if session['username']:

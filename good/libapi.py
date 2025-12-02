@@ -7,7 +7,11 @@ from time import time
 
 from pathlib import Path
 
-secret = 'MYSUPERSECRETKEY'
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+secret = os.getenv('JWT_SECRET')
 not_after = 60 # 1 minute
 
 def keygen(username, password=None, login=True):

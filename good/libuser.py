@@ -1,7 +1,8 @@
-
+import copy
 import hashlib
 import os
 import sqlite3
+import time
 from binascii import hexlify, unhexlify
 from pathlib import Path
 
@@ -10,8 +11,8 @@ from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 from cryptography.exceptions import InvalidKey
 
 HERE = Path(__file__).parent
-
-
+MAX_FAILED_ATTEMPTS = 5
+LOCKOUT_TIME = 15 * 60
 def login(username, password, **kwargs):
 
     conn = sqlite3.connect('db_users.sqlite')
@@ -23,6 +24,8 @@ def login(username, password, **kwargs):
 
     if not user:
         #print('The user doesnt exists')
+        return False
+    if is_locked(username):
         return False
 
     backend = default_backend()
@@ -51,14 +54,13 @@ def login(username, password, **kwargs):
     return False
 
 
-
 def user_create(username, password=None):
 
     conn = sqlite3.connect('db_users.sqlite')
     conn.set_trace_callback(print)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
-    c.execute("INSERT INTO users (username, password, salt, failures, mfa_enabled, mfa_secret) VALUES ('%s', '%s', '%s', '%d', '%d', '%s')" %(username, '', '', 0, 0, ''))
+    c.execute("INSERT INTO users (username, password, salt, failures, mfa_enabled, mfa_secret,locked_until) VALUES (?, ?, ?, ?, ?, ?, ?)" ,(username, '', '', 0, 0, 0,0))
     conn.commit()
 
     if password:
@@ -135,3 +137,61 @@ def is_password_leaked(password):
 
 def is_password_allowed(password):
     return is_password_complex(password) and not is_password_leaked(password)
+
+def get_failed_attempts(username):
+    conn = sqlite3.connect('db_users.sqlite')
+    conn.set_trace_callback(print)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+
+    user =c.execute("SELECT failures FROM users WHERE username = ?", (username,)).fetchone()
+    if not user:
+        return 0
+    return user['failures']
+
+def set_failed_attempts(username, failed_attempts):
+    conn = sqlite3.connect('db_users.sqlite')
+    conn.set_trace_callback(print)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+
+    c.execute("UPDATE users SET failures = ? WHERE username = ?", (failed_attempts, username))
+    conn.commit()
+def increment_failed_attempts(username):
+    current = get_failed_attempts(username)
+    new_value = current + 1
+    set_failed_attempts(username, new_value)
+    return new_value
+
+def is_locked(username):
+    conn = sqlite3.connect('db_users.sqlite')
+    conn.set_trace_callback(print)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+
+    user = c.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+    if not user:
+        return False
+
+    locked_until = user['locked_until']
+    if locked_until is None or locked_until == 0:
+        return False
+    return locked_until > int(time.time())
+
+def lock_account(username):
+    conn = sqlite3.connect('db_users.sqlite')
+    conn.set_trace_callback(print)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    locked_until = int(time.time()) + LOCKOUT_TIME
+    c.execute("UPDATE users SET locked_until = ?, failures = 0 WHERE username = ?", (locked_until, username))
+    conn.commit()
+
+
+def unlock_account(username):
+    conn = sqlite3.connect('db_users.sqlite')
+    conn.set_trace_callback(print)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute("UPDATE users SET locked_until = 0 WHERE username = ?", (username,))
+    conn.commit()

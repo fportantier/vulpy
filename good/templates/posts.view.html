@@ -20,7 +20,8 @@
       {% if posts %}
         <ul class="w3-ul w3-left-align w3-border">
         {% for post in posts %}
-          <li><span class="w3-h3">{{ post.text | safe }}</span></li>
+        <!-- | safe was removed -->
+          <li><span class="w3-h3">{{ post.text }}</span></li>
         {% endfor %}
         </ul>
       {% else %}

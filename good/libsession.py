@@ -1,20 +1,18 @@
-import json
-import base64
-
+from cryptography.fernet import Fernet
 import geoip2.database
 
-from cryptography.fernet import Fernet
+import os
+from dotenv import load_dotenv
 
-
-key = 'JHtM1wEt1I1J9N_Evjwqr3yYauXIqSxYzFnRhcf0ZG0='
+load_dotenv()
+key = os.getenv('SESSION_KEY')
 fernet = Fernet(key)
-ttl = 7200 # seconds
+ttl = 7200  # seconds
 reader = geoip2.database.Reader('GeoLite2-Country.mmdb')
 
 
 def getcountry(request):
-
-    country = 'XX' # For local connections
+    country = 'XX'  # For local connections
 
     try:
         geo = reader.country(request.remote_addr)
@@ -26,32 +24,36 @@ def getcountry(request):
 
 
 def create(request, response, username):
-
     country = getcountry(request)
 
-    response.set_cookie('vulpy_session', fernet.encrypt(
-        (username + '|' + country).encode()
-    ))
+    # Build the session payload and encrypt it
+    plaintext = f"{username}|{country}".encode()  # bytes for Fernet
+    token = fernet.encrypt(plaintext)             # bytes
+    token_str = token.decode("utf-8")             # string for cookie
+
+    # Cookie value must be a str, not bytes
+    response.set_cookie('vulpy_session', token_str)
 
     return response
 
 
 def load(request):
-
     cookie = request.cookies.get('vulpy_session')
 
     if not cookie:
         return {}
 
     try:
-        token = fernet.decrypt(cookie.encode(), ttl=ttl).decode()
-        username, country = token.split('|')
+        # cookie is a str, Fernet expects bytes
+        token = fernet.decrypt(cookie.encode(), ttl=ttl)
+        username, country = token.decode().split('|')
     except Exception as e:
         print(e)
         return {}
 
-    if country == getcountry(request.remote_addr):
-        return {'username': username, 'country' : country}
+    # getcountry expects the full request, not just remote_addr
+    if country == getcountry(request):
+        return {'username': username, 'country': country}
     else:
         return {}
 
@@ -59,4 +61,3 @@ def load(request):
 def destroy(response):
     response.set_cookie('vulpy_session', '', expires=0)
     return response
-
